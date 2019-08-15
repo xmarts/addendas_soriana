@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data noupdate="0">
+    <template id="addenda_sorianaFN" name="Soriana Factura Normal">
+      <DSCargaRemisionProv>
+
+        <!-- Variables de datos restantes -->
+        <t t-set="sdato" t-value="'FaltaDato'" />
+        
+        <!-- Datos del xml generado por el SAT -->
+        <t t-set="xml" t-value="record.l10n_mx_edi_get_xml_etree()" />
+        <t t-set="serie" t-value="xml.get('Serie')" />
+        <t t-set="folio" t-value="xml.get('Folio')" />
+        <t t-set="subtotal" t-value="xml.get('SubTotal')" />
+        <t t-set="descuentos" t-value="xml.get('Descuento')" />
+        <t t-set="total" t-value="xml.get('Total')" />
+        
+        <!-- Cantidad de productos -->
+        <t t-set="cantidadent" t-value="0" />
+        <t t-set="cantcont" t-value="0" />
+        <t t-foreach="record.fields_sales.order_line" t-as="rec" >
+          <t t-set="cantidadent" t-value="cantidadent + rec.product_uom_qty" />
+          <t t-set="cantcont" t-value="cantcont + 1" />
+        </t>
+        
+        <Remision Id="Remision1" RowOrder="0">
+          <Proveedor t-field="record.partner_shipping_id.shipping_number_provider" />
+          <Remision t-esc="serie+'-'+str(folio)" />
+          <Consecutivo>0</Consecutivo>
+          <FechaRemision t-field="record.date_invoice" t-options='{"format": "yyyy-MM-ddThh:mm:ss"}' />
+          <Tienda t-field="record.partner_shipping_id.shipping_number_store" />
+          <TipoMoneda>1</TipoMoneda>
+          <TipoBulto>1</TipoBulto>
+          <EntregaMercancia t-field="record.partner_shipping_id.shipping_number_cedis" />
+          <CumpleReqFiscales>true</CumpleReqFiscales>
+          <CantidadBultos t-esc="int(cantidadent)" />
+          <SubTotal t-esc="subtotal" />
+          <Descuentos>0</Descuentos>
+          <t t-set="tagiva" t-value="0" />
+          <t t-set="tagieps" t-value="0" />
+          <t t-foreach="record.fields_sales.order_line" t-as="rec">
+            <t t-foreach="rec.tax_id" t-as="tc" >
+              <t t-foreach="tc.tag_ids" t-as="tg" >
+                <t t-if="tg.name == 'IVA'">
+                  <t t-set="tagiva" t-value="tc.amount" />
+                </t>
+                <t t-if="tg.name == 'IEPS'">
+                  <t t-set="tagieps" t-value="tc.amount" />
+                </t>
+              </t>
+            </t>
+          </t>
+          <IEPS t-esc="'%.2f'% tagiva" />
+          <IVA t-esc="'%.2f'% tagieps" />
+          <OtrosImpuestos>0</OtrosImpuestos>
+          <Total t-esc="total" />
+          <CantidadPedidos>1</CantidadPedidos>
+          <t t-set="pruebafecha" t-value="record.fields_sales.date_of_deli" t-options='{"format": "yyyy-MM-dd"}' />
+          <FechaEntregaMercancia t-esc="str(pruebafecha)+'T'+'00:00:00'" />
+          <Cita t-field="record.fields_sales.number_appoi" />
+        </Remision>
+        
+        <Pedidos Id="Pedidos1" RowOrder="1">
+          <Proveedor t-field="record.partner_shipping_id.shipping_number_provider" />
+          <Remision t-esc="serie+'-'+str(folio)" />
+          <FolioPedido t-field="record.fields_sales.number_order" />
+          <Tienda t-field="record.partner_shipping_id.shipping_number_store" />
+          <CantidadArticulos t-esc="int(cantcont)" />
+        </Pedidos>
+        
+        <!-- Articulos -->
+        <t t-set="idrowart" t-value="0" />
+        <t t-set="porcentajeiva" t-value="0" />
+        <t t-set="porcentajeieps" t-value="0" />
+        <t t-foreach="record.fields_sales.order_line" t-as="rec" >
+          <t t-set="idrowart" t-value="idrowart + 1" />
+          <Articulos t-att-Id="'Articulos'+str(idrowart)" t-att-RowOrder="str(idrowart)">
+            <Proveedor t-field="record.partner_shipping_id.shipping_number_provider" />
+            <Remision t-esc="serie+'-'+str(folio)" />
+            <FolioPedido t-field="record.fields_sales.number_order" />
+            <Tienda t-field="record.partner_shipping_id.shipping_number_store" />
+            <Codigo t-esc="rec.product_id.barcode" />
+            <CantidadUnidadCompra t-esc="'%.2f'% rec.product_uom_qty" />
+            <CostoNetoUnidadCompra t-esc="'%.2f'% rec.price_unit" />
+            <t t-foreach="rec.tax_id" t-as="tc" >
+              <t t-foreach="tc.tag_ids" t-as="tg" >
+                <t t-if="tg.name == 'IVA'">
+                  <t t-set="porcentajeiva" t-value="tc.amount" />
+                </t>
+                <t t-if="tg.name == 'IEPS'">
+                  <t t-set="porcentajeieps" t-value="tc.amount" />
+                </t>
+              </t>
+            </t>
+            <PorcentajeIEPS t-esc="'%.2f'% porcentajeieps" />
+            <PorcentajeIVA t-esc="'%.2f'% porcentajeiva" />
+          </Articulos>
+        </t>
+      </DSCargaRemisionProv>
+    </template>
+    <record id="addenda_sorianaFN" model="ir.ui.view">
+      <field name="l10n_mx_edi_addenda_flag">True</field>
+    </record>
+  </data>
+</odoo>
