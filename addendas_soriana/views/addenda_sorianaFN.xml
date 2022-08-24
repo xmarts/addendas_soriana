@@ -7,11 +7,15 @@
                 <t t-set="sdato" t-value="'FaltaDato'"/>
                 <!-- Datos del xml generado por el SAT -->
                 <t t-set="xml" t-value="record._get_values_addenda()"/>
+                <t t-set="format_float" t-value="xml.get('format_float')"/>
+                <t t-set="format_string" t-value="xml.get('format_string')"/>
+                <t t-set="tax_objected" t-value="xml.get('tax_objected')"/>
+                <t t-set="currency_precision" t-value="xml.get('currency_precision')"/>
                 <t t-set="serie" t-value="xml.get('serie_number')"/>
                 <t t-set="folio" t-value="xml.get('folio_number')"/>
-                <t t-set="subtotal" t-value="xml.get('total_price_subtotal_before_discount')"/>
-                <t t-set="descuentos" t-value="xml.get('total_price_discount')"/>
-                <t t-set="total" t-value="record.amount_total"/>
+                <t t-set="subtotal" t-value="format_float(xml.get('total_price_subtotal_before_discount') if tax_objected == '02' else record.amount_total + xml.get('total_price_discount'), currency_precision)"/>
+                <t t-set="descuentos" t-value="format_float(xml.get('total_price_discount'), currency_precision) if not record.currency_id.is_zero(xml.get('total_price_discount')) else None"/>
+                <t t-set="total" t-value="format_float(record.amount_total, currency_precision)"/>
 
                 <!-- Cantidad de productos -->
                 <t t-set="cantidadent" t-value="0"/>
@@ -37,7 +41,8 @@
                     <Descuentos>0</Descuentos>
                     <t t-set="tagiva" t-value="0"/>
                     <t t-set="tagieps" t-value="0"/>
-                    <t t-foreach="record.fields_sales.order_line" t-as="rec">
+                    <!-- FIXME: Descomentar esta parte -->
+                    <!-- <t t-foreach="record.fields_sales.order_line" t-as="rec">
                         <t t-foreach="rec.tax_id" t-as="tc">
                             <t t-foreach="tc.tag_ids" t-as="tg">
                                 <t t-if="tg.name == 'IVA'">
@@ -48,7 +53,7 @@
                                 </t>
                             </t>
                         </t>
-                    </t>
+                    </t> -->
                     <IEPS t-esc="'%.2f'% tagieps"/>
                     <IVA t-esc="'%.2f'% float(tagiva)"/>
                     <OtrosImpuestos>0</OtrosImpuestos>
@@ -73,9 +78,10 @@
                 <t t-set="porcentajeieps" t-value="0"/>
                 <t t-set="valprecre" t-value="0" />
                 <t t-foreach="record.fields_sales.order_line" t-as="rec">
-                    <t t-foreach="xml.Conceptos.Concepto" t-as="rc">
-                        <t t-if="rc.get('NoIdentificacion') == rec.product_id.barcode" >
-                            <t t-set="valprecre" t-value="rc.get('ValorUnitario')" />
+                    <t t-foreach="xml.get('invoice_line_vals_list')" t-as="line_vals">
+                        <t t-set="line" t-value="line_vals['line']"/>
+                        <t t-if="format_string(line.product_id.default_code) == rec.product_id.barcode">
+                            <t t-set="valprecre" t-value="format_float(line_vals['gross_price_total_unit'] if xml.get('tax_objected') == '02' else (line.price_total + line_vals['price_discount']) / line.quantity, currency_precision)"/>
                         </t>
                     </t>
                     <t t-set="idrowart" t-value="idrowart + 1"/>
@@ -87,7 +93,8 @@
                         <Codigo t-esc="rec.product_id.barcode"/>
                         <CantidadUnidadCompra t-esc="'%.2f'% rec.product_uom_qty"/>
                         <CostoNetoUnidadCompra t-esc="'%.2f'% float(valprecre)"/>
-                        <t t-foreach="rec.tax_id" t-as="tc">
+                        <!-- FIXME: Descomentar esta parte -->
+                        <!-- <t t-foreach="rec.tax_id" t-as="tc">
                             <t t-foreach="tc.tag_ids" t-as="tg">
                                 <t t-if="tg.name == 'IVA'">
                                     <t t-set="porcentajeiva" t-value="tc.amount"/>
@@ -96,7 +103,7 @@
                                     <t t-set="porcentajeieps" t-value="tc.amount"/>
                                 </t>
                             </t>
-                        </t>
+                        </t> -->
                         <PorcentajeIEPS t-esc="'%.2f'% porcentajeieps"/>
                         <PorcentajeIVA t-esc="'%.2f'% porcentajeiva"/>
                     </Articulos>
