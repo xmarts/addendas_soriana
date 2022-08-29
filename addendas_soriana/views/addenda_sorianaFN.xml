@@ -41,18 +41,36 @@
                     <Descuentos>0</Descuentos>
                     <t t-set="tagiva" t-value="0"/>
                     <t t-set="tagieps" t-value="0"/>
-                    <!-- FIXME: Descomentar esta parte -->
-                    <!-- <t t-foreach="record.fields_sales.order_line" t-as="rec">
-                        <t t-foreach="rec.tax_id" t-as="tc">
-                            <t t-foreach="tc.tag_ids" t-as="tg">
-                                <t t-if="tg.name == 'IVA'">
-                                    <t t-set="tagiva" t-value="record.amount_tax"/>
-                                </t>
-                                <t t-if="tg.name == 'IEPS'">
-                                    <t t-set="tagieps" t-value="tc.amount"/>
-                                </t>
+                    <!-- FIXME: Descomentar esta parte Revisar esta parte del calculo del iva en addenda Soriana-->
+                    <t t-set="tax_totals" t-value="json.loads(record.tax_totals_json)"/>
+                    <tax_totals t-esc="tax_totals"/>
+                    <t t-foreach="tax_totals['subtotals']" t-as="subtotal">
+                        <t t-set="subtotal_to_show" t-value="subtotal['name']"/>
+                        <t t-foreach="tax_totals['groups_by_subtotal'][subtotal_to_show]" t-as="amount_by_group">
+                            <t t-set="is_ieps" t-value="request.env['account.tax.group'].browse(amount_by_group['tax_group_id']).ieps"/>
+                            <t t-if="is_ieps == False">
+                                <t t-set="tagiva" t-value="tagiva + amount_by_group['tax_group_amount']"/>
+                            </t>
+                            <t t-if="is_ieps == True">
+                                <t t-set="tagieps" t-value="tagieps + amount_by_group['tax_group_amount']"/>
                             </t>
                         </t>
+                    </t>
+
+
+
+
+                    <!-- <t t-foreach="record.invoice_line_ids" t-as="rec">
+                        <t t-foreach="rec.tax_ids" t-as="tc"> -->
+                            <!-- <t t-foreach="tc.tag_ids" t-as="tg"> -->
+                                <!-- <t t-if="tc.description[0:3] == 'IVA'">
+                                    <t t-set="tagiva" t-value="record.amount_tax"/>
+                                </t>
+                                <t t-if="tc.ieps == True">
+                                    <t t-set="tagieps" t-value="tagieps + tc.amount"/>
+                                </t> -->
+                            <!-- </t> -->
+                        <!-- </t>
                     </t> -->
                     <IEPS t-esc="'%.2f'% tagieps"/>
                     <IVA t-esc="'%.2f'% float(tagiva)"/>
