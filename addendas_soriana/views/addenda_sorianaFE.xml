@@ -36,7 +36,7 @@
                   <TipoBulto>1</TipoBulto>
                   <EntregaMercancia t-field="record.partner_shipping_id.shipping_number_cedis"/>
                   <CumpleReqFiscales>true</CumpleReqFiscales>
-                  <CantidadBultos t-esc="'%.2f'% cantidadent"/>
+                  <CantidadBultos t-esc="cantidadent"/>
                   <Subtotal t-esc="subtotal"/>
                   <Descuentos>0</Descuentos>
                   <t t-set="tagiva" t-value="0"/>
