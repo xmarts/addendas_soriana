@@ -84,7 +84,7 @@
                   <FolioPedido t-field="record.fields_sales.number_order"/>
                   <Tienda t-field="record.partner_shipping_id.shipping_number_store"/>
                   <CantidadArticulos t-esc="int(cantcont)"/>
-                  <PedidoEmitidoProveedor>Si</PedidoEmitidoProveedor>
+                  <!-- <PedidoEmitidoProveedor>Si</PedidoEmitidoProveedor> -->
               </Pedidos>
 
               <!-- Articulos -->
@@ -95,7 +95,7 @@
               <t t-foreach="record.fields_sales.order_line" t-as="rec">
                   <t t-foreach="xml.get('invoice_line_vals_list')" t-as="line_vals">
                       <t t-set="line" t-value="line_vals['line']"/>
-                      <t t-if="format_string(line.product_id.default_code) == rec.product_id.barcode">
+                      <t t-if="format_string(line.product_id.default_code) == rec.product_id.default_code">
                           <t t-set="valprecre" t-value="format_float(line_vals['gross_price_total_unit'] if tax_objected == '02' else (line.price_total + line_vals['price_discount']) / line.quantity, currency_precision)"/>
                       </t>
                   </t>
@@ -112,14 +112,14 @@
                         <!-- <t t-foreach="tc.tag_ids" t-as="tg"> -->
                             <t t-if="tc.description[0:3] == 'IVA'">
                                 <!-- <t t-set="porcentajeiva" t-value="tc.amount"/> -->
-                                <t t-set="porcentajeiva" t-value="float('%.2f'% ((rec.product_uom_qty * rec.price_unit/1.16)*0.16))"/>
+                                <t t-set="porcentajeiva" t-value="tc.amount"/>
                             </t>
                             <t t-if="tc.ieps == True">
                                 <t t-set="porcentajeieps" t-value="tc.amount"/>
                             </t>
                         <!-- </t> -->
                     </t>
-                      <!-- <PorcentajeIEPS t-esc="'%.2f'% porcentajeieps"/> -->  <!-- FIXME: Revisar esta parte -->
+                      <PorcentajeIEPS t-esc="'%.2f'% porcentajeieps"/>  <!-- FIXME: Revisar esta parte -->
                       <PorcentajeIVA t-esc="'%.2f'% porcentajeiva"/>
                   </Articulos>
               </t>
