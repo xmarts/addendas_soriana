@@ -109,15 +109,15 @@
                         <t t-foreach="rec.tax_id" t-as="tc">
                             <!-- <t t-foreach="tc.tag_ids" t-as="tg"> -->
                                 <t t-if="tc.description[0:3] == 'IVA'">
-                                    <!-- <t t-set="porcentajeiva" t-value="tc.amount"/> -->
-                                    <t t-set="porcentajeiva" t-value="float('%.2f'% ((rec.product_uom_qty * rec.price_unit/1.16)*0.16))"/>
+                                    <t t-set="porcentajeiva" t-value="tc.amount"/>
+                                    <!-- <t t-set="porcentajeiva" t-value="float('%.2f'% ((rec.product_uom_qty * rec.price_unit/1.16)*0.16))"/> -->
                                 </t>
                                 <t t-if="tc.ieps == True">
                                     <t t-set="porcentajeieps" t-value="tc.amount"/>
                                 </t>
                             <!-- </t> -->
                         </t>
-                        <!-- <PorcentajeIEPS t-esc="'%.2f'% porcentajeieps"/> --> <!-- FIXME: Revisar esta parte -->
+                        <PorcentajeIEPS t-esc="0.00"/> <!-- FIXME: Revisar esta parte -->
                         <PorcentajeIVA t-esc="'%.2f'% porcentajeiva"/>
                     </Articulos>
                 </t>
