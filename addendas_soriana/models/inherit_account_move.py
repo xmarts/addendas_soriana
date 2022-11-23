@@ -2,6 +2,9 @@
 from odoo import models, fields, api
 
 
+import logging
+
+_logger = logging.getLogger(__name__)
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
@@ -13,5 +16,5 @@ class AccountMove(models.Model):
                 if l.edi_format_id == cfdi_3_3_edi:
                     invoice = l.move_id
                     xml = l.edi_format_id._l10n_mx_edi_get_invoice_cfdi_values(invoice)
-                    print('xml', xml)
-                    return l.edi_format_id._l10n_mx_edi_get_invoice_cfdi_values(invoice)
+                    _logger.warning(xml)
+                    return xml

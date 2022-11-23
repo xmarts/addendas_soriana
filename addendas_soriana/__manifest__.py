@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "addendas_soriana",
-    'summary': """Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
+    'summary': """Adenda Soriana - CATOEX""",
     'description': """Long description of module's purpose""",
     'author': "Xmarts",
     'contributors': "victoralonso@xmarts.com, javier.hilario@xmarts.com",
@@ -11,7 +10,6 @@
     'version': '14.0.1.0.0',
     'depends': ['base', 'l10n_mx_edi'],
     'data': [
-        # 'security/ir.model.access.csv',
         'views/addenda_sorianaFN.xml',
         'views/addenda_sorianaFE.xml',
     ],
