@@ -1,0 +1,50 @@
+<odoo>
+  <data>
+
+    <!--  Añadiendo campos en la vista de ventas -->
+
+    <record id="add_camp_tarif" model="ir.ui.view">
+      <field name="name">add.camp.tarif</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="base.view_partner_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='child_ids']/form/sheet/group/group[2]//field[@name='email']" position="before">
+          <group>
+            <field name="rate_address" string="Tarifa" />
+          </group>
+        </xpath>
+        <xpath expr="//field[@name='child_ids']/form/sheet/group[2]//field[@name='comment']" position="after">
+          <group>
+            <field name="shipping_number_provider" string="Numero de proveedor" />
+            <field name="shipping_number_store" string="Numero de tienda" />
+            <field name="shipping_number_cedis" string="Numero de cedis" />
+            <field name="shipping_type_suc" string="Tipo (Cedis, Sucursal, Oficinas)" />
+            <field name="shipping_gln" string="GLN" />
+            <field name="contact_name" string="Nombre de contacto" />
+          </group>
+        </xpath>
+      </field>
+    </record>
+
+    <record id="add_camp_number_store" model="ir.ui.view">
+      <field name="name">add.camp.number.store</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="product.view_partner_property_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='property_product_pricelist']" position="after">
+          <field name="number_store" string="Numero de tienda" />
+          <field name="most_ieps" string="Mostrar IEPS" invisible="1"/>
+          <field name="type_customer" string="Tipo de cliente" invisible="1"/>
+          <field name="number_sucursal" string="Numero de sucursal" />
+          <field name="type_suc" string="Tipo" />
+          <field name="gln" string="GLN" />
+          <field name="number_provideer" string="Numero de proveedor" />
+          <field name="format_suc" string="Formato entrega" invisible="1" />
+        </xpath>
+      </field>
+    </record>
+
+    
+
+  </data>
+</odoo>

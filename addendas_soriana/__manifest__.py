@@ -10,6 +10,8 @@
     'version': '14.0.1.0.0',
     'depends': ['base', 'l10n_mx_edi'],
     'data': [
+        'views/res_partner_view.xml',
+        'views/sale_order_view.xml',
         'views/addenda_sorianaFN.xml',
         'views/addenda_sorianaFE.xml',
     ],
