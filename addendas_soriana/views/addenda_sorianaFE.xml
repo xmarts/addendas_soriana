@@ -14,7 +14,7 @@
               <t t-set="serie" t-value="xml.get('serie_number')"/>
               <t t-set="folio" t-value="xml.get('folio_number')"/>
               <t t-set="subtotal" t-value="format_float(xml.get('total_price_subtotal_before_discount') if tax_objected == '02' else record.amount_total + xml.get('total_price_discount'), currency_precision)"/>
-              <t t-set="descuentos" t-value="format_float(xml.get('total_price_discount'), currency_precision) if not record.currency_id.is_zero(xml.get('total_price_discount')) else None"/>
+              <!-- <t t-set="descuentos" t-value="format_float(xml.get('total_price_discount'), currency_precision) if not record.currency_id.is_zero(xml.get('total_price_discount')) else None"/> -->
               <t t-set="total" t-value="format_float(record.amount_total, currency_precision)"/>
 
               <!-- Cantidad de productos -->
@@ -42,7 +42,7 @@
                   <t t-set="tagiva" t-value="0"/>
                   <t t-set="tagieps" t-value="0"/>
                   <!-- FIXME: Revisar esta parte -->
-                  <t t-set="tax_totals" t-value="json.loads(record.tax_totals_json)"/>
+                  <!-- <t t-set="tax_totals" t-value="json.loads(record.tax_totals_json)"/>
                   <t t-foreach="tax_totals['subtotals']" t-as="subtotal">
                       <t t-set="subtotal_to_show" t-value="subtotal['name']"/>
                       <t t-foreach="tax_totals['groups_by_subtotal'][subtotal_to_show]" t-as="amount_by_group">
@@ -54,7 +54,7 @@
                               <t t-set="tagieps" t-value="tagieps + amount_by_group['tax_group_amount']"/>
                           </t>
                       </t>
-                  </t>
+                  </t> -->
                   <!-- <t t-foreach="record.fields_sales.order_line" t-as="rec">
                       <t t-foreach="rec.tax_id" t-as="tc">
                           <t t-foreach="tc.tag_ids" t-as="tg">

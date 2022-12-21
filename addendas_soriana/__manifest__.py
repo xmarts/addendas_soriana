@@ -7,7 +7,7 @@
     'contributors': "victoralonso@xmarts.com, javier.hilario@xmarts.com",
     'website': "http://www.xmarts.com",
     'category': 'Uncategorized',
-    'version': '14.0.1.0.0',
+    'version': '14.0.2.0.0',
     'depends': ['base', 'fields_functions_adendas'],
     'data': [
         'views/addenda_sorianaFN.xml',
