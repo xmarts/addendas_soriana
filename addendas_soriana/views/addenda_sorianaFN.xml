@@ -46,7 +46,7 @@
                     <t t-foreach="tax_totals['subtotals']" t-as="subtotal">
                         <t t-set="subtotal_to_show" t-value="subtotal['name']"/>
                         <t t-foreach="tax_totals['groups_by_subtotal'][subtotal_to_show]" t-as="amount_by_group">
-                            <t t-set="is_ieps" t-value="request.env['account.tax.group'].browse(amount_by_group['tax_group_id']).ieps"/>
+                            <t t-set="is_ieps" t-value="request.env['account.tax.group'].browse(amount_by_group['tax_group_id']).is_ieps"/>
                             <t t-if="is_ieps == False">
                                 <t t-set="tagiva" t-value="tagiva + amount_by_group['tax_group_amount']"/>
                             </t>
@@ -55,18 +55,6 @@
                             </t>
                         </t>
                     </t>
-                    <!-- <t t-foreach="record.fields_sales.order_line" t-as="rec">
-                        <t t-foreach="rec.tax_id" t-as="tc"> -->
-                            <!-- <t t-foreach="tc.tag_ids" t-as="tg"> -->
-                                <!-- <t t-if="tc.description[0:3] == 'IVA'">
-                                    <t t-set="tagiva" t-value="record.amount_tax"/>
-                                </t>
-                                <t t-if="tc.ieps == True">
-                                    <t t-set="tagieps" t-value="tagieps + tc.amount"/>
-                                </t> -->
-                            <!-- </t> -->
-                        <!-- </t>
-                    </t> -->
                     <IEPS t-esc="'%.2f'% tagieps"/>
                     <IVA t-esc="'%.2f'% float(tagiva)"/>
                     <OtrosImpuestos>0</OtrosImpuestos>
@@ -107,15 +95,12 @@
                         <CantidadUnidadCompra t-esc="'%.2f'% rec.product_uom_qty"/>
                         <CostoNetoUnidadCompra t-esc="'%.2f'% float(valprecre)"/>
                         <t t-foreach="rec.tax_id" t-as="tc">
-                            <!-- <t t-foreach="tc.tag_ids" t-as="tg"> -->
-                                <t t-if="tc.description[0:3] == 'IVA'">
-                                    <t t-set="porcentajeiva" t-value="tc.amount"/>
-                                    <!-- <t t-set="porcentajeiva" t-value="float('%.2f'% ((rec.product_uom_qty * rec.price_unit/1.16)*0.16))"/> -->
-                                </t>
-                                <t t-if="tc.ieps == True">
-                                    <t t-set="porcentajeieps" t-value="tc.amount"/>
-                                </t>
-                            <!-- </t> -->
+                            <t t-if="tc.description[0:3] == 'IVA'">
+                                <t t-set="porcentajeiva" t-value="tc.amount"/>
+                            </t>
+                            <t t-if="tc.is_ieps == True">
+                                <t t-set="porcentajeieps" t-value="tc.amount"/>
+                            </t>
                         </t>
                         <PorcentajeIEPS t-esc="0.00"/> <!-- FIXME: Revisar esta parte -->
                         <PorcentajeIVA t-esc="'%.2f'% porcentajeiva"/>
