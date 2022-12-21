@@ -8,7 +8,7 @@
     'website': "http://www.xmarts.com",
     'category': 'Uncategorized',
     'version': '14.0.1.0.0',
-    'depends': ['base', 'l10n_mx_edi'],
+    'depends': ['base', 'l10n_mx_edi', 'fields_functions_adendas'],
     'data': [
         'views/addenda_sorianaFN.xml',
         'views/addenda_sorianaFE.xml',
