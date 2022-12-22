@@ -2,12 +2,12 @@
 {
     'name': "addendas_soriana",
     'summary': """Adenda Soriana - CATOEX""",
-    'description': """Long description of module's purpose""",
+    'description': """Adenda Soriana - CATOEX""",
     'author': "Xmarts",
-    'contributors': "victoralonso@xmarts.com, javier.hilario@xmarts.com",
+    'contributors': "victoralonso@xmarts.com, javier.hilario@xmarts.com, cristian.vargas@xmarts.com",
     'website': "http://www.xmarts.com",
     'category': 'Uncategorized',
-    'version': '14.0.2.0.0',
+    'version': '14.0.3.0.0',
     'depends': ['base', 'fields_functions_adendas'],
     'data': [
         'views/addenda_sorianaFN.xml',

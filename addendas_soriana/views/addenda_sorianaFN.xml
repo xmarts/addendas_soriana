@@ -14,14 +14,14 @@
                 <t t-set="serie" t-value="xml.get('serie_number')"/>
                 <t t-set="folio" t-value="xml.get('folio_number')"/>
                 <t t-set="subtotal" t-value="format_float(xml.get('total_price_subtotal_before_discount') if tax_objected == '02' else record.amount_total + xml.get('total_price_discount'), currency_precision)"/>
-                <t t-set="descuentos" t-value="format_float(xml.get('total_price_discount'), currency_precision) if not record.currency_id.is_zero(xml.get('total_price_discount')) else None"/>
+                <!-- <t t-set="descuentos" t-value="format_float(xml.get('total_price_discount'), currency_precision) if not record.currency_id.is_zero(xml.get('total_price_discount')) else None"/> -->
                 <t t-set="total" t-value="format_float(record.amount_total, currency_precision)"/>
 
                 <!-- Cantidad de productos -->
                 <t t-set="cantidadent" t-value="0"/>
                 <t t-set="cantcont" t-value="0"/>
-                <t t-foreach="record.fields_sales.order_line" t-as="rec">
-                    <t t-set="cantidadent" t-value="cantidadent + rec.product_uom_qty"/>
+                <t t-foreach="record.invoice_line_ids" t-as="rec">
+                    <t t-set="cantidadent" t-value="cantidadent + rec.quantity"/>
                     <t t-set="cantcont" t-value="cantcont + 1"/>
                 </t>
 
@@ -39,48 +39,32 @@
                     <CantidadBultos t-esc="int(cantidadent)"/>
                     <Subtotal t-esc="subtotal"/>
                     <Descuentos>0</Descuentos>
-                    <t t-set="tagiva" t-value="0"/>
-                    <t t-set="tagieps" t-value="0"/>
-                    <!-- FIXME: Revisar esta parte -->
-                    <t t-set="tax_totals" t-value="json.loads(record.tax_totals_json)"/>
-                    <t t-foreach="tax_totals['subtotals']" t-as="subtotal">
-                        <t t-set="subtotal_to_show" t-value="subtotal['name']"/>
-                        <t t-foreach="tax_totals['groups_by_subtotal'][subtotal_to_show]" t-as="amount_by_group">
-                            <t t-set="is_ieps" t-value="request.env['account.tax.group'].browse(amount_by_group['tax_group_id']).ieps"/>
-                            <t t-if="is_ieps == False">
-                                <t t-set="tagiva" t-value="tagiva + amount_by_group['tax_group_amount']"/>
+                    <t t-set="tagiva" t-value="0.00"/>
+                    <t t-set="tagieps" t-value="0.00"/>
+                    <t t-foreach="record.invoice_line_ids" t-as="rec">
+                        <t t-foreach="rec.tax_id" t-as="tax">
+                            <t t-if="tax.description[0:3].upper() == 'IVA'">
+                                <t t-set="tagiva" t-value="tagiva + (rec.price_subtotal * tax.amount/100)"/>
                             </t>
-                            <t t-if="is_ieps == True">
-                                <t t-set="tagieps" t-value="tagieps + amount_by_group['tax_group_amount']"/>
+                            <t t-if="tax.description[0:4].upper() == 'IEPS'">
+                                <t t-set="tagieps" t-value="tagieps + (rec.price_subtotal * tax.amount/100)"/>
                             </t>
                         </t>
-                    </t>
-                    <!-- <t t-foreach="record.fields_sales.order_line" t-as="rec">
-                        <t t-foreach="rec.tax_id" t-as="tc"> -->
-                            <!-- <t t-foreach="tc.tag_ids" t-as="tg"> -->
-                                <!-- <t t-if="tc.description[0:3] == 'IVA'">
-                                    <t t-set="tagiva" t-value="record.amount_tax"/>
-                                </t>
-                                <t t-if="tc.ieps == True">
-                                    <t t-set="tagieps" t-value="tagieps + tc.amount"/>
-                                </t> -->
-                            <!-- </t> -->
-                        <!-- </t>
-                    </t> -->
-                    <IEPS t-esc="'%.2f'% tagieps"/>
+                    </t> 
+                    <IEPS t-esc="'%.2f'% float(tagieps)"/>
                     <IVA t-esc="'%.2f'% float(tagiva)"/>
                     <OtrosImpuestos>0</OtrosImpuestos>
                     <Total t-esc="total"/>
                     <CantidadPedidos>1</CantidadPedidos>
-                    <t t-set="pruebafecha" t-value="record.fields_sales.date_of_deli" t-options="{&quot;format&quot;: &quot;yyyy-MM-dd&quot;}"/>
+                    <t t-set="pruebafecha" t-value="record.sale_order_id.commitment_date" t-options="{&quot;format&quot;: &quot;yyyy-MM-dd&quot;}"/>
                     <FechaEntregaMercancia t-esc="str(pruebafecha)+'T'+'00:00:00'"/>
-                    <Cita t-field="record.fields_sales.number_appoi"/>
+                    <Cita t-field="record.sale_order_id.number_cita"/>
                 </Remision>
 
                 <Pedidos Id="Pedidos1" RowOrder="1">
                     <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
                     <Remision t-esc="serie+'-'+str(folio)"/>
-                    <FolioPedido t-field="record.fields_sales.number_order"/>
+                    <FolioPedido t-field="record.sale_order_id.number_cita"/>
                     <Tienda t-field="record.partner_shipping_id.shipping_number_store"/>
                     <CantidadArticulos t-esc="int(cantcont)"/>
                 </Pedidos>
@@ -90,7 +74,7 @@
                 <t t-set="porcentajeiva" t-value="0"/>
                 <t t-set="porcentajeieps" t-value="0"/>
                 <t t-set="valprecre" t-value="0" />
-                <t t-foreach="record.fields_sales.order_line" t-as="rec">
+                <t t-foreach="record.invoice_line_ids" t-as="rec">
                     <t t-foreach="xml.get('invoice_line_vals_list')" t-as="line_vals">
                         <t t-set="line" t-value="line_vals['line']"/>
                         <t t-if="format_string(line.product_id.default_code) == rec.product_id.default_code">
@@ -101,21 +85,18 @@
                     <Articulos t-att-Id="'Articulos'+str(idrowart)" t-att-RowOrder="str(idrowart)">
                         <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
                         <Remision t-esc="serie+'-'+str(folio)"/>
-                        <FolioPedido t-field="record.fields_sales.number_order"/>
+                        <FolioPedido t-field="record.sale_order_id.number_cita"/>
                         <Tienda t-field="record.partner_shipping_id.shipping_number_store"/>
                         <Codigo t-esc="rec.product_id.barcode"/>
                         <CantidadUnidadCompra t-esc="'%.2f'% rec.product_uom_qty"/>
                         <CostoNetoUnidadCompra t-esc="'%.2f'% float(valprecre)"/>
                         <t t-foreach="rec.tax_id" t-as="tc">
-                            <!-- <t t-foreach="tc.tag_ids" t-as="tg"> -->
-                                <t t-if="tc.description[0:3] == 'IVA'">
-                                    <t t-set="porcentajeiva" t-value="tc.amount"/>
-                                    <!-- <t t-set="porcentajeiva" t-value="float('%.2f'% ((rec.product_uom_qty * rec.price_unit/1.16)*0.16))"/> -->
-                                </t>
-                                <t t-if="tc.ieps == True">
-                                    <t t-set="porcentajeieps" t-value="tc.amount"/>
-                                </t>
-                            <!-- </t> -->
+                            <t t-if="tc.description[0:3].upper() == 'IVA'">
+                                <t t-set="porcentajeiva" t-value="tc.amount"/>
+                            </t>
+                            <t t-if="tc.description[0:4].upper() == 'IEPS'">
+                                <t t-set="porcentajeieps" t-value="tc.amount"/>
+                            </t>
                         </t>
                         <PorcentajeIEPS t-esc="0.00"/> <!-- FIXME: Revisar esta parte -->
                         <PorcentajeIVA t-esc="'%.2f'% porcentajeiva"/>
