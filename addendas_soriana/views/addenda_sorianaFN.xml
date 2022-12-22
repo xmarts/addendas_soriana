@@ -42,7 +42,7 @@
                     <t t-set="tagiva" t-value="0.00"/>
                     <t t-set="tagieps" t-value="0.00"/>
                     <t t-foreach="record.invoice_line_ids" t-as="rec">
-                        <t t-foreach="rec.tax_id" t-as="tax">
+                        <t t-foreach="rec.tax_ids" t-as="tax">
                             <t t-if="tax.description[0:3].upper() == 'IVA'">
                                 <t t-set="tagiva" t-value="tagiva + (rec.price_subtotal * tax.amount/100)"/>
                             </t>
@@ -56,7 +56,7 @@
                     <OtrosImpuestos>0</OtrosImpuestos>
                     <Total t-esc="total"/>
                     <CantidadPedidos>1</CantidadPedidos>
-                    <t t-set="pruebafecha" t-value="record.sale_order_id.commitment_date" t-options="{&quot;format&quot;: &quot;yyyy-MM-dd&quot;}"/>
+                    <t t-set="pruebafecha" t-value="record.sale_order_id.commitment_date if record.sale_order_id else ''" t-options="{&quot;format&quot;: &quot;yyyy-MM-dd&quot;}"/>
                     <FechaEntregaMercancia t-esc="str(pruebafecha)+'T'+'00:00:00'"/>
                     <Cita t-field="record.sale_order_id.number_cita"/>
                 </Remision>
@@ -88,9 +88,9 @@
                         <FolioPedido t-field="record.sale_order_id.number_cita"/>
                         <Tienda t-field="record.partner_shipping_id.shipping_number_store"/>
                         <Codigo t-esc="rec.product_id.barcode"/>
-                        <CantidadUnidadCompra t-esc="'%.2f'% rec.product_uom_qty"/>
+                        <CantidadUnidadCompra t-esc="'%.2f'% rec.quantity"/>
                         <CostoNetoUnidadCompra t-esc="'%.2f'% float(valprecre)"/>
-                        <t t-foreach="rec.tax_id" t-as="tc">
+                        <t t-foreach="rec.tax_ids" t-as="tc">
                             <t t-if="tc.description[0:3].upper() == 'IVA'">
                                 <t t-set="porcentajeiva" t-value="tc.amount"/>
                             </t>
