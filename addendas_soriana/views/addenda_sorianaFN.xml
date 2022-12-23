@@ -61,8 +61,11 @@
                     <Total t-esc="total"/>
                     <CantidadPedidos>1</CantidadPedidos>
                     <t t-set="pruebafecha" t-value="record.sale_order_id.commitment_date" t-options="{&quot;format&quot;: &quot;yyyy-MM-dd&quot;}"/>
+                    <t t-if="pruebafecha">
+                        <t t-set="pruebafecha" t-value="str(pruebafecha).split(' ')[0]"/>
+                    </t>
                     <FechaEntregaMercancia t-esc="str(pruebafecha)+'T'+'00:00:00'"/>
-                    <Cita t-field="record.sale_order_id.number_appoi"/>
+                    <FolioNotaEntrada t-field="record.sale_order_id.entry_note_folio"/>
                 </Remision>
 
                 <Pedidos Id="Pedidos1" RowOrder="1">
@@ -109,7 +112,7 @@
             </DSCargaRemisionProv>
         </template>
         <record id="addenda_sorianaFN" model="ir.ui.view">
-          <field name="l10n_mx_edi_addenda_flag">True</field>
+            <field name="l10n_mx_edi_addenda_flag">True</field>
         </record>
     </data>
 </odoo>
