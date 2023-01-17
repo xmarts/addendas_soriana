@@ -59,6 +59,7 @@
                     <t t-set="pruebafecha" t-value="record.sale_order_id.commitment_date if record.sale_order_id else ''" t-options="{&quot;format&quot;: &quot;yyyy-MM-dd&quot;}"/>
                     <FechaEntregaMercancia t-esc="str(pruebafecha)+'T'+'00:00:00'"/>
                     <Cita t-field="record.sale_order_id.number_cita"/>
+                    <FolioNotaEntrada t-field="record.sale_order_id.entry_note_folio"/>
                 </Remision>
 
                 <Pedidos Id="Pedidos1" RowOrder="1">
