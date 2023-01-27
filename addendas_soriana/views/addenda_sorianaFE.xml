@@ -40,19 +40,19 @@
                   <Subtotal t-esc="subtotal"/>
                   <Descuentos>0</Descuentos>
                   <t t-set="tagiva" t-value="0"/>
-                  <t t-set="tagieps" t-value="0"/>
+                  <!-- <t t-set="tagieps" t-value="0"/> -->
                   <!-- FIXME: Revisar esta parte -->
-                  <t t-set="tax_totals" t-value="json.loads(record.tax_totals_json)"/>
+                  <t t-set="tax_totals" t-value="record.tax_totals"/>
                   <t t-foreach="tax_totals['subtotals']" t-as="subtotal">
                       <t t-set="subtotal_to_show" t-value="subtotal['name']"/>
                       <t t-foreach="tax_totals['groups_by_subtotal'][subtotal_to_show]" t-as="amount_by_group">
-                          <t t-set="is_ieps" t-value="request.env['account.tax.group'].browse(amount_by_group['tax_group_id']).ieps"/>
-                          <t t-if="is_ieps == False">
+                          <!-- <t t-set="is_ieps" t-value="request.env['account.tax.group'].browse(amount_by_group['tax_group_id']).ieps"/> -->
+                          <!-- <t t-if="is_ieps == False"> -->
                               <t t-set="tagiva" t-value="tagiva + amount_by_group['tax_group_amount']"/>
-                          </t>
-                          <t t-if="is_ieps == True">
+                          <!-- </t> -->
+                          <!-- <t t-if="is_ieps == True">
                               <t t-set="tagieps" t-value="tagieps + amount_by_group['tax_group_amount']"/>
-                          </t>
+                          </t> -->
                       </t>
                   </t>
                   <!-- <t t-foreach="record.fields_sales.order_line" t-as="rec">
@@ -67,7 +67,7 @@
                           </t>
                       </t>
                   </t> -->
-                  <IEPS t-esc="'%.2f'% tagieps"/>
+                  <!-- <IEPS t-esc="'%.2f'% tagieps"/> -->
                   <IVA t-esc="'%.2f'% float(tagiva)"/>
                   <OtrosImpuestos>0</OtrosImpuestos>
                   <Total t-esc="total"/>
@@ -90,7 +90,7 @@
               <!-- Articulos -->
               <t t-set="idrowart" t-value="0"/>
               <t t-set="porcentajeiva" t-value="0"/>
-              <t t-set="porcentajeieps" t-value="0"/>
+              <!-- <t t-set="porcentajeieps" t-value="0"/> -->
               <t t-set="valprecre" t-value="0" />
               <t t-foreach="record.fields_sales.order_line" t-as="rec">
                   <t t-foreach="xml.get('invoice_line_vals_list')" t-as="line_vals">
@@ -114,12 +114,12 @@
                                 <!-- <t t-set="porcentajeiva" t-value="tc.amount"/> -->
                                 <t t-set="porcentajeiva" t-value="tc.amount"/>
                             </t>
-                            <t t-if="tc.ieps == True">
+                            <!-- <t t-if="tc.ieps == True">
                                 <t t-set="porcentajeieps" t-value="tc.amount"/>
-                            </t>
+                            </t> -->
                         <!-- </t> -->
                     </t>
-                      <PorcentajeIEPS t-esc="0.00"/>  <!-- FIXME: Revisar esta parte -->
+                      <!-- <PorcentajeIEPS t-esc="0.00"/>  FIXME: Revisar esta parte -->
                       <PorcentajeIVA t-esc="'%.2f'% porcentajeiva"/>
                   </Articulos>
               </t>
