@@ -10,7 +10,8 @@
     'version': '14.0.3.0.0',
     'depends': ['base', 'fields_functions_adendas'],
     'data': [
+        'views/account_move_view.xml',
         'views/addenda_sorianaFN.xml',
-        'views/addenda_sorianaFE.xml',
+        # 'views/addenda_sorianaFE.xml',
     ],
 }

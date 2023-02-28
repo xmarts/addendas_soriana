@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="account_move_soriana_form_inherit" model="ir.ui.view">
+        <field name="name">account.move.soriana.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='other_info']" position="inside">
+                <group name="soriana">
+                    <field name="commitment_date"/>
+                    <field name="number_cita"/>
+                    <field name="entry_note_folio"/>
+                    <field name="folio_pedido"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

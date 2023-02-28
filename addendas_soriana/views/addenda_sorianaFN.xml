@@ -56,16 +56,19 @@
                     <OtrosImpuestos>0</OtrosImpuestos>
                     <Total t-esc="total"/>
                     <CantidadPedidos>1</CantidadPedidos>
-                    <t t-set="pruebafecha" t-value="record.sale_order_id.commitment_date if record.sale_order_id else ''" t-options="{&quot;format&quot;: &quot;yyyy-MM-dd&quot;}"/>
+                    <t t-set="pruebafecha" t-value="record.sale_order_id.commitment_date if record.sale_order_id else record.commitment_date" t-options="{&quot;format&quot;: &quot;yyyy-MM-dd&quot;}"/>
                     <FechaEntregaMercancia t-esc="str(pruebafecha)+'T'+'00:00:00'"/>
-                    <Cita t-field="record.sale_order_id.number_cita"/>
-                    <FolioNotaEntrada t-field="record.sale_order_id.entry_note_folio"/>
+                    <t t-set="number_cita" t-value="record.sale_order_id.number_cita if record.sale_order_id else record.number_cita"/>
+                    <Cita t-esc="number_cita"/>
+                    <t t-set="folio_entry" t-value="record.sale_order_id.entry_note_folio if record.sale_order_id else record.entry_note_folio"/>
+                    <FolioNotaEntrada t-esc="folio_entry"/>
                 </Remision>
 
                 <Pedidos Id="Pedidos1" RowOrder="1">
                     <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
                     <Remision t-esc="serie+'-'+str(folio)"/>
-                    <FolioPedido t-field="record.sale_order_id.number_cita"/>
+                    <t t-set="folio_pedido" t-value="record.sale_order_id.number_cita if record.sale_order_id else record.folio_pedido"/>
+                    <FolioPedido t-esc="folio_pedido"/>
                     <Tienda t-field="record.partner_shipping_id.shipping_number_store"/>
                     <CantidadArticulos t-esc="int(cantcont)"/>
                 </Pedidos>
