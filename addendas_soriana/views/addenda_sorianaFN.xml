@@ -13,7 +13,7 @@
                 <t t-set="currency_precision" t-value="xml.get('currency_precision')"/>
                 <t t-set="serie" t-value="xml.get('serie_number')"/>
                 <t t-set="folio" t-value="xml.get('folio_number')"/>
-                <t t-set="subtotal" t-value="format_float(xml.get('total_price_subtotal_before_discount') if tax_objected == '02' else record.amount_total + xml.get('total_price_discount'), currency_precision)"/>
+                <t t-set="subtotal" t-value="xml.get('total_amount_untaxed_wo_discount')"/>
                 <!-- <t t-set="descuentos" t-value="format_float(xml.get('total_price_discount'), currency_precision) if not record.currency_id.is_zero(xml.get('total_price_discount')) else None"/> -->
                 <t t-set="total" t-value="format_float(record.amount_total, currency_precision)"/>
 
@@ -89,7 +89,8 @@
                     <Articulos t-att-Id="'Articulos'+str(idrowart)" t-att-RowOrder="str(idrowart)">
                         <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
                         <Remision t-esc="serie+'-'+str(folio)"/>
-                        <FolioPedido t-field="record.sale_order_id.number_cita"/>
+                        <FolioPedido t-esc="folio_pedido"/>
+                        <!-- <FolioPedido t-field="record.sale_order_id.number_cita"/> -->
                         <Tienda t-field="record.partner_shipping_id.shipping_number_store"/>
                         <Codigo t-esc="rec.product_id.barcode"/>
                         <CantidadUnidadCompra t-esc="'%.2f'% rec.quantity"/>
