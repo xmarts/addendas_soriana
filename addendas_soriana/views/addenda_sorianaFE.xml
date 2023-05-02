@@ -67,7 +67,7 @@
                           </t>
                       </t>
                   </t> -->
-                  <IEPS t-esc="0"/>
+                  <IEPS>0</IEPS>
                   <IVA t-esc="'%.2f'% float(tagiva)"/>
                   <OtrosImpuestos>0</OtrosImpuestos>
                   <Total t-esc="total"/>
@@ -119,7 +119,7 @@
                             </t> -->
                         <!-- </t> -->
                     </t>
-                      <PorcentajeIEPS t-esc="0.00"/>
+                      <PorcentajeIEPS>0.00</PorcentajeIEPS>
                       <PorcentajeIVA t-esc="'%.2f'% porcentajeiva"/>
                   </Articulos>
               </t>
