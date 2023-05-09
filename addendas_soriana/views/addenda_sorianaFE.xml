@@ -2,7 +2,7 @@
 <odoo>
     <data noupdate="0">
         <template id="addenda_sorianaFE" name="Soriana Factura Extemporanea codigo">
-            <DSCargaRemisionProv>
+            <DSCargaRemisionProv xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/DSCargaRemisionProv.xsd">
               <!-- Variables de datos restantes -->
               <t t-set="sdato" t-value="'FaltaDato'"/>
               <!-- Datos del xml generado por el SAT -->
@@ -25,9 +25,9 @@
                   <t t-set="cantcont" t-value="cantcont + 1"/>
               </t>
 
-              <Remision Id="Remision1" RowOrder="0">
+              <Remision>
                   <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
-                  <Remision t-esc="serie+'-'+str(folio)"/>
+                  <Remision t-esc="serie+str(folio)"/>
                   <Consecutivo>0</Consecutivo>
                   <t t-set="fechar" t-value="record.invoice_date" t-options="{&quot;format&quot;: &quot;yyyy-MM-dd&quot;}"/>
                   <FechaRemision t-esc="str(fechar)+'T'+'00:00:00'"/>
@@ -67,7 +67,7 @@
                           </t>
                       </t>
                   </t> -->
-                  <IEPS>0</IEPS>
+                  <IEPS>0.00</IEPS>
                   <IVA t-esc="'%.2f'% float(tagiva)"/>
                   <OtrosImpuestos>0</OtrosImpuestos>
                   <Total t-esc="total"/>
@@ -119,7 +119,7 @@
                             </t> -->
                         <!-- </t> -->
                     </t>
-                      <PorcentajeIEPS>0.00</PorcentajeIEPS>
+                      <PorcentajeIEPS>0</PorcentajeIEPS>
                       <PorcentajeIVA t-esc="'%.2f'% porcentajeiva"/>
                   </Articulos>
               </t>
