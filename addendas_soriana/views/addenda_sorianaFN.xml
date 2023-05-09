@@ -34,7 +34,7 @@
                     <Tienda t-field="record.partner_shipping_id.shipping_number_store"/>
                     <TipoMoneda>1</TipoMoneda>
                     <TipoBulto>1</TipoBulto>
-                    <EntregaMercancia t-field="record.partner_shipping_id.shipping_number_cedis"/>
+                    <EntregaMercancia t-field="record.partner_id.gln"/>
                     <CumpleReqFiscales>true</CumpleReqFiscales>
                     <CantidadBultos t-esc="int(cantidadent)"/>
                     <Subtotal t-esc="subtotal"/>
@@ -79,7 +79,7 @@
 
                 <Pedidos Id="Pedidos1" RowOrder="1">
                     <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
-                    <Remision t-esc="serie+'-'+str(folio)"/>
+                    <Remision t-esc="serie+str(folio)"/>
                     <FolioPedido t-field="record.sale_order_id.number_order"/>
                     <Tienda t-field="record.partner_shipping_id.shipping_number_store"/>
                     <CantidadArticulos t-esc="int(cantcont)"/>
