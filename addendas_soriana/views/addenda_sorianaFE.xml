@@ -78,7 +78,7 @@
                   <FolioNotaEntrada t-field="record.sale_order_id.entry_note_folio"/>
               </Remision>
 
-              <Pedidos Id="Pedidos1" RowOrder="1">
+              <Pedidos>
                   <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
                   <Remision t-esc="serie+str(folio)"/>
                   <FolioPedido t-field="record.sale_order_id.number_order"/>
@@ -100,9 +100,9 @@
                       </t>
                   </t>
                   <t t-set="idrowart" t-value="idrowart + 1"/>
-                  <Articulos t-att-Id="'Articulos'+str(idrowart)" t-att-RowOrder="str(idrowart)">
+                  <Articulos>
                       <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
-                      <Remision t-esc="serie+'-'+str(folio)"/>
+                      <Remision t-esc="serie+str(folio)"/>
                       <FolioPedido t-field="record.sale_order_id.number_order"/>
                       <Tienda t-field="record.partner_shipping_id.shipping_number_store"/>
                       <Codigo t-esc="rec.product_id.barcode"/>
