@@ -34,7 +34,7 @@
                   <Tienda t-field="record.partner_shipping_id.shipping_number_store"/>
                   <TipoMoneda>1</TipoMoneda>
                   <TipoBulto>1</TipoBulto>
-                  <EntregaMercancia t-field="record.partner_id.gln"/>
+                  <EntregaMercancia t-field="record.partner_shipping_id.gln"/>
                   <CumpleReqFiscales>true</CumpleReqFiscales>
                   <CantidadBultos t-esc="int(cantidadent)"/>
                   <Subtotal t-esc="subtotal"/>
