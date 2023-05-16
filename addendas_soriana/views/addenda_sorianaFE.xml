@@ -27,7 +27,7 @@
 
               <Remision>
                   <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
-                  <Remision t-field="record.sale_order_id.number_order"/>
+                  <Remision t-esc="serie+str(folio)"/>
                   <Consecutivo>0</Consecutivo>
                   <t t-set="fechar" t-value="record.invoice_date" t-options="{&quot;format&quot;: &quot;yyyy-MM-dd&quot;}"/>
                   <FechaRemision t-esc="str(fechar)+'T'+'00:00:00'"/>
@@ -80,7 +80,7 @@
 
               <Pedidos>
                   <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
-                  <Remision t-field="record.sale_order_id.number_order"/>
+                  <Remision t-esc="serie+str(folio)"/>
                   <FolioPedido t-field="record.sale_order_id.number_order"/>
                   <Tienda t-field="record.partner_shipping_id.shipping_number_store"/>
                   <CantidadArticulos t-esc="int(cantcont)"/>
@@ -102,7 +102,7 @@
                   <t t-set="idrowart" t-value="idrowart + 1"/>
                   <Articulos>
                       <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
-                      <Remision t-field="record.sale_order_id.number_order"/>
+                      <Remision t-esc="serie+str(folio)"/>
                       <FolioPedido t-field="record.sale_order_id.number_order"/>
                       <Tienda t-field="record.partner_shipping_id.shipping_number_store"/>
                       <Codigo t-esc="rec.product_id.barcode"/>
