@@ -20,8 +20,8 @@
               <!-- Cantidad de productos -->
               <t t-set="cantidadent" t-value="0"/>
               <t t-set="cantcont" t-value="0"/>
-              <t t-foreach="record.sale_order_id.order_line" t-as="rec">
-                  <t t-set="cantidadent" t-value="cantidadent + rec.product_uom_qty"/>
+              <t t-foreach="record.invoice_line_ids" t-as="rec">
+                  <t t-set="cantidadent" t-value="cantidadent + rec.quantity"/>
                   <t t-set="cantcont" t-value="cantcont + 1"/>
               </t>
 
