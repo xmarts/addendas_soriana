@@ -106,7 +106,7 @@
                       <FolioPedido t-field="record.sale_order_id.number_order"/>
                       <Tienda t-field="record.partner_shipping_id.shipping_number_store"/>
                       <Codigo t-esc="rec.product_id.barcode"/>
-                      <CantidadUnidadCompra t-esc="'%.2f'% rec.product_uom_qty"/>
+                      <CantidadUnidadCompra t-esc="'%.2f'% rec.quantity"/>
                       <CostoNetoUnidadCompra t-esc="'%.2f'% float(valprecre)"/>
                       <t t-foreach="rec.tax_ids" t-as="tc">
                         <!-- <t t-foreach="tc.tag_ids" t-as="tg"> -->
