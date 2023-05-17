@@ -12,7 +12,7 @@
     'depends': ['base', 'l10n_mx_edi', 'fields_functions_adendas'],
     'data': [
         # 'security/ir.model.access.csv',
-        'views/addenda_sorianaFN.xml',
+        #'views/addenda_sorianaFN.xml',
         'views/addenda_sorianaFE.xml',
     ],
 }
