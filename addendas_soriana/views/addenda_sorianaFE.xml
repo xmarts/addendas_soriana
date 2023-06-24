@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="0">
-        <template id="addenda_sorianaFE" name="Soriana Factura Extemporanea codigo">
+        <template id="addenda_sorianaFE" name="Soriana_FE">
             <DSCargaRemisionProv xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/DSCargaRemisionProv.xsd">
               <!-- Variables de datos restantes -->
               <t t-set="sdato" t-value="'FaltaDato'"/>
