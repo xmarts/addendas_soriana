@@ -84,7 +84,7 @@
                   <FolioPedido t-field="record.sale_order_id.number_order"/>
                   <Tienda t-field="record.partner_shipping_id.shipping_number_store"/>
                   <CantidadArticulos t-esc="int(cantcont)"/>
-                  <!-- <PedidoEmitidoProveedor>Si</PedidoEmitidoProveedor> -->
+                  <PedidoEmitidoProveedor>SI</PedidoEmitidoProveedor>
               </Pedidos>
 
               <!-- Articulos -->
