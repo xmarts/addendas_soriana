@@ -25,13 +25,17 @@
 
                 <t t-set="percentage_iva" t-value="0"/>
                 <t t-set="percentage_ieps" t-value="0"/>
+                <t t-set="percentage_others" t-value="0"/>
                 <t t-foreach="record.invoice_line_ids" t-as="rec">
                     <t t-foreach="rec.tax_ids" t-as="tax">
-                        <t t-if="tax.is_ieps">
+                        <t t-if="tax.tax_type == '003' ">
                             <t t-set="percentage_ieps" t-value="percentage_ieps + rec.tax.amount"/>
                         </t>
-                        <t t-else="">
+                        <t t-elif="tax.tax_type == '002'">
                             <t t-set="percentage_iva" t-value="percentage_iva + tax.amount"/>
+                        </t>
+                        <t t-else="">
+                            <t t-set="percentage_others" t-value="percentage_others + tax.amount"/>
                         </t>
                     </t>
                 </t>
@@ -52,7 +56,7 @@
                     <Descuentos>0</Descuentos> <!--Consultar-->
                     <IEPS t-esc="'%.2f'% (record.amount_untaxed * percentage_ieps /100)"/>
                     <IVA t-esc="'%.2f'% (record.amount_untaxed * percentage_iva /100)"/>
-                    <OtrosImpuestos>0</OtrosImpuestos> <!--Consultar-->
+                    <OtrosImpuestos t-esc="'%.2f'% (record.amount_untaxed * percentage_others /100)"/>
                     <Total t-esc="total"/>
                     <CantidadPedidos t-field="record.quantity_orders"/> 
                     <t t-set="formatfecha" t-value="record.date_of_deli" t-options="{&quot;format&quot;: &quot;yyyy-MM-dd&quot;}"/>

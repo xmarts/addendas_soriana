@@ -46,13 +46,7 @@
                     <t t-foreach="tax_totals['subtotals']" t-as="subtotal">
                         <t t-set="subtotal_to_show" t-value="subtotal['name']"/>
                         <t t-foreach="tax_totals['groups_by_subtotal'][subtotal_to_show]" t-as="amount_by_group">
-                            <!-- <t t-set="is_ieps" t-value="request.env['account.tax.group'].browse(amount_by_group['tax_group_id']).ieps"/> -->
-                            <!-- <t t-if="is_ieps == False"> -->
                                 <t t-set="tagiva" t-value="tagiva + amount_by_group['tax_group_amount']"/>
-                            <!-- </t> -->
-                            <!-- <t t-if="is_ieps == True"> -->
-                                <!-- <t t-set="tagieps" t-value="tagieps + amount_by_group['tax_group_amount']"/> -->
-                            <!-- </t> -->
                         </t>
                     </t>
                     <!-- <t t-foreach="record.sale_order_id.order_line" t-as="rec">
