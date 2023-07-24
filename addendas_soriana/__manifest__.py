@@ -11,6 +11,8 @@
     'version': '15.0.1.0.0',
     'depends': ['base', 'l10n_mx_edi', 'fields_functions_adendas'],
     'data': [
+        #'views/addenda_sorianaFN.xml',
+        'views/addenda_sorianaFE.xml',
         'views/addenda_soriana_foot_truck.xml',
     ],
 }
