@@ -38,13 +38,13 @@
 
                 <Remision Id="Remision1" RowOrder="1">
                     <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
-                    <Remision t-esc="serie+str(folio)"/> <!--Consultar-->
+                    <Remision t-esc="record.remision"/> <!--Consultar -->
                     <Consecutivo>0</Consecutivo>
-                    <t t-set="fechar" t-value="record.invoice_date" t-options="{'format': 'yyyy-MM-dd'}"/> <!--Consultar-->
+                    <t t-set="fechar" t-value="record.date_remision" t-options="{'format': 'yyyy-MM-dd'}"/> <!--Consultar-->
                     <FechaRemision t-esc="str(fechar)+'T'+'00:00:00'"/>
                     <Tienda t-field="record.shipping_number_cedis"/>
-                    <TipoMoneda>1</TipoMoneda> <!--Consultar-->
-                    <TipoBulto>1</TipoBulto> <!--Consultar-->
+                    <TipoMoneda t-field="record.currency_id.currency_unit_label"/> 
+                    <TipoBulto t-field="record.package_type"/>
                     <EntregaMercancia t-field="record.partner_shipping_id.gln"/>
                     <CumpleReqFiscales>true</CumpleReqFiscales>
                     <CantidadBultos t-esc="int(cantidadent)"/>
@@ -54,7 +54,7 @@
                     <IVA t-esc="'%.2f'% (record.amount_untaxed * percentage_iva /100)"/>
                     <OtrosImpuestos>0</OtrosImpuestos> <!--Consultar-->
                     <Total t-esc="total"/>
-                    <CantidadPedidos>1</CantidadPedidos>
+                    <CantidadPedidos t-field="record.quantity_orders"/> 
                     <t t-set="formatfecha" t-value="record.date_of_deli" t-options="{&quot;format&quot;: &quot;yyyy-MM-dd&quot;}"/>
                     <FechaEntregaMercancia t-esc="str(formatfecha)+'T'+'00:00:00'"/>
                     <FolioNotaEntrada t-field="record.entry_note_folio"/>
@@ -75,7 +75,7 @@
                     <t t-set="number_line" t-value="number_line + 1"/>
                     <Articulos Id="Remision1" t-att-RowOrder="number_line">
                         <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
-                        <Remision t-esc="serie+str(folio)"/>
+                        <Remision t-esc="record.remision"/>
                         <FolioPedido t-field="record.number_order"/>
                         <Tienda t-field="record.partner_shipping_id.shipping_number_store"/>
                         <Codigo t-esc="rec.product_id.barcode"/>
