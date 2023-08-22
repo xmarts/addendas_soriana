@@ -14,5 +14,6 @@
         #'views/addenda_sorianaFN.xml',
         'views/addenda_sorianaFE.xml',
         'views/addenda_soriana_foot_truck.xml',
+        'views/data.xml',
     ],
 }
