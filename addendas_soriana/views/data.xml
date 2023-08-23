@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <odoo>
     <record id="addenda_soriana" model="type.addenda">
-        <field name="name">soriana</field>
-        <field name="code">soriana</field>
+        <field name="name">soriana_pie_de_camion</field>
+        <field name="code">soriana_pie_de_camion</field>
     </record>
 </odoo>
