@@ -2,94 +2,96 @@
 <odoo>
     <data noupdate="0">
         <template id="addenda_soriana_foot_truck" name="soriana_pie_de_camion">
-            <DSCargaRemisionProv xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/DSCargaRemisionProv.xsd">
-                <!-- Datos del xml generado por el SAT -->
-                <t t-set="xml" t-value="record._get_values_addenda()"/>
-                <t t-set="format_float" t-value="xml.get('format_float')"/>
-                <t t-set="format_string" t-value="xml.get('format_string')"/>
-                <t t-set="tax_objected" t-value="xml.get('tax_objected')"/>
-                <t t-set="currency_precision" t-value="xml.get('currency_precision')"/>
-                <t t-set="serie" t-value="xml.get('serie_number')"/>
-                <t t-set="folio" t-value="xml.get('folio_number')"/>
-                <t t-set="subtotal" t-value="format_float(xml.get('total_price_subtotal_before_discount') if tax_objected == '02' else record.amount_total + xml.get('total_price_discount'), currency_precision)"/>
-                <t t-set="descuentos" t-value="format_float(xml.get('total_price_discount'), currency_precision) if not record.currency_id.is_zero(xml.get('total_price_discount')) else None"/>
-                <t t-set="total" t-value="format_float(record.amount_total, currency_precision)"/>
+            <t t-if="record.move_type == 'out_invoice'">
+                <DSCargaRemisionProv xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/DSCargaRemisionProv.xsd">
+                    <!-- Datos del xml generado por el SAT -->
+                    <t t-set="xml" t-value="record._get_values_addenda()"/>
+                    <t t-set="format_float" t-value="xml.get('format_float')"/>
+                    <t t-set="format_string" t-value="xml.get('format_string')"/>
+                    <t t-set="tax_objected" t-value="xml.get('tax_objected')"/>
+                    <t t-set="currency_precision" t-value="xml.get('currency_precision')"/>
+                    <t t-set="serie" t-value="xml.get('serie_number')"/>
+                    <t t-set="folio" t-value="xml.get('folio_number')"/>
+                    <t t-set="subtotal" t-value="format_float(xml.get('total_price_subtotal_before_discount') if tax_objected == '02' else record.amount_total + xml.get('total_price_discount'), currency_precision)"/>
+                    <t t-set="descuentos" t-value="format_float(xml.get('total_price_discount'), currency_precision) if not record.currency_id.is_zero(xml.get('total_price_discount')) else None"/>
+                    <t t-set="total" t-value="format_float(record.amount_total, currency_precision)"/>
 
-                <!-- Cantidad de productos -->
-                <t t-set="cantidadent" t-value="0"/>
-                <t t-set="cantcont" t-value="0"/>
-                <t t-foreach="record.invoice_line_ids" t-as="rec">
-                    <t t-set="cantidadent" t-value="cantidadent + rec.quantity"/>
-                    <t t-set="cantcont" t-value="cantcont + 1"/>
-                </t>
+                    <!-- Cantidad de productos -->
+                    <t t-set="cantidadent" t-value="0"/>
+                    <t t-set="cantcont" t-value="0"/>
+                    <t t-foreach="record.invoice_line_ids" t-as="rec">
+                        <t t-set="cantidadent" t-value="cantidadent + rec.quantity"/>
+                        <t t-set="cantcont" t-value="cantcont + 1"/>
+                    </t>
 
-                <t t-set="percentage_iva" t-value="0"/>
-                <t t-set="percentage_ieps" t-value="0"/>
-                <t t-set="percentage_others" t-value="0"/>
-                <t t-foreach="record.invoice_line_ids" t-as="rec">
-                    <t t-foreach="rec.tax_ids" t-as="tax">
-                        <t t-if="tax.tax_type == '003' ">
-                            <t t-set="percentage_ieps" t-value="percentage_ieps + rec.tax.amount"/>
-                        </t>
-                        <t t-elif="tax.tax_type == '002'">
-                            <t t-set="percentage_iva" t-value="percentage_iva + tax.amount"/>
-                        </t>
-                        <t t-else="">
-                            <t t-set="percentage_others" t-value="percentage_others + tax.amount"/>
+                    <t t-set="percentage_iva" t-value="0"/>
+                    <t t-set="percentage_ieps" t-value="0"/>
+                    <t t-set="percentage_others" t-value="0"/>
+                    <t t-foreach="record.invoice_line_ids" t-as="rec">
+                        <t t-foreach="rec.tax_ids" t-as="tax">
+                            <t t-if="tax.tax_type == '003' ">
+                                <t t-set="percentage_ieps" t-value="percentage_ieps + rec.tax.amount"/>
+                            </t>
+                            <t t-elif="tax.tax_type == '002'">
+                                <t t-set="percentage_iva" t-value="percentage_iva + tax.amount"/>
+                            </t>
+                            <t t-else="">
+                                <t t-set="percentage_others" t-value="percentage_others + tax.amount"/>
+                            </t>
                         </t>
                     </t>
-                </t>
 
-                <Remision Id="Remision1" RowOrder="1">
-                    <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
-                    <Remision t-esc="record.remision"/> <!--Consultar -->
-                    <Consecutivo>0</Consecutivo>
-                    <t t-set="fechar" t-value="record.date_remision" t-options="{'format': 'yyyy-MM-dd'}"/> <!--Consultar-->
-                    <FechaRemision t-esc="str(fechar)+'T'+'00:00:00'"/>
-                    <Tienda t-field="record.shipping_number_cedis"/>
-                    <TipoMoneda t-field="record.currency_id.currency_unit_label"/> 
-                    <TipoBulto t-field="record.package_type"/>
-                    <EntregaMercancia t-field="record.partner_shipping_id.gln"/>
-                    <CumpleReqFiscales>true</CumpleReqFiscales>
-                    <CantidadBultos t-esc="int(cantidadent)"/>
-                    <Subtotal t-esc="subtotal"/> <!--Consultar-->
-                    <Descuentos>0</Descuentos> <!--Consultar-->
-                    <IEPS t-esc="'%.2f'% (record.amount_untaxed * percentage_ieps /100)"/>
-                    <IVA t-esc="'%.2f'% (record.amount_untaxed * percentage_iva /100)"/>
-                    <OtrosImpuestos t-esc="'%.2f'% (record.amount_untaxed * percentage_others /100)"/>
-                    <Total t-esc="total"/>
-                    <CantidadPedidos t-field="record.quantity_orders"/> 
-                    <t t-set="formatfecha" t-value="record.date_of_deli" t-options="{&quot;format&quot;: &quot;yyyy-MM-dd&quot;}"/>
-                    <FechaEntregaMercancia t-esc="str(formatfecha)+'T'+'00:00:00'"/>
-                    <FolioNotaEntrada t-field="record.entry_note_folio"/>
-                </Remision>
-
-                <Pedidos Id="Remision1" RowOrder="1">
-                    <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
-                    <Remision t-esc="serie+str(folio)"/>
-                    <FolioPedido t-field="record.number_order"/>
-                    <Tienda t-field="record.partner_shipping_id.shipping_number_store"/>
-                    <CantidadArticulos t-esc="int(cantcont)"/>
-                </Pedidos>
-
-              <!-- Articulos -->
-                
-                <t t-set="number_line" t-value="0"/>
-                <t t-foreach="record.invoice_line_ids" t-as="rec">
-                    <t t-set="number_line" t-value="number_line + 1"/>
-                    <Articulos Id="Remision1" t-att-RowOrder="number_line">
+                    <Remision Id="Remision1" RowOrder="1">
                         <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
-                        <Remision t-esc="record.remision"/>
+                        <Remision t-esc="record.remision"/> <!--Consultar -->
+                        <Consecutivo>0</Consecutivo>
+                        <t t-set="fechar" t-value="record.date_remision" t-options="{'format': 'yyyy-MM-dd'}"/> <!--Consultar-->
+                        <FechaRemision t-esc="str(fechar)+'T'+'00:00:00'"/>
+                        <Tienda t-field="record.shipping_number_cedis"/>
+                        <TipoMoneda t-field="record.currency_id.currency_unit_label"/> 
+                        <TipoBulto t-field="record.package_type"/>
+                        <EntregaMercancia t-field="record.partner_shipping_id.gln"/>
+                        <CumpleReqFiscales>true</CumpleReqFiscales>
+                        <CantidadBultos t-esc="int(cantidadent)"/>
+                        <Subtotal t-esc="subtotal"/> <!--Consultar-->
+                        <Descuentos>0</Descuentos> <!--Consultar-->
+                        <IEPS t-esc="'%.2f'% (record.amount_untaxed * percentage_ieps /100)"/>
+                        <IVA t-esc="'%.2f'% (record.amount_untaxed * percentage_iva /100)"/>
+                        <OtrosImpuestos t-esc="'%.2f'% (record.amount_untaxed * percentage_others /100)"/>
+                        <Total t-esc="total"/>
+                        <CantidadPedidos t-field="record.quantity_orders"/> 
+                        <t t-set="formatfecha" t-value="record.date_of_deli" t-options="{&quot;format&quot;: &quot;yyyy-MM-dd&quot;}"/>
+                        <FechaEntregaMercancia t-esc="str(formatfecha)+'T'+'00:00:00'"/>
+                        <FolioNotaEntrada t-field="record.entry_note_folio"/>
+                    </Remision>
+
+                    <Pedidos Id="Remision1" RowOrder="1">
+                        <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
+                        <Remision t-esc="serie+str(folio)"/>
                         <FolioPedido t-field="record.number_order"/>
                         <Tienda t-field="record.partner_shipping_id.shipping_number_store"/>
-                        <Codigo t-esc="rec.product_id.barcode"/>
-                        <CantidadUnidadCompra t-esc="rec.quantity"/>
-                        <CostoNetoUnidadCompra t-esc="round(rec.price_unit,2)"/>
-                        <PorcentajeIEPS t-esc="'%.2f'% percentage_ieps"/>
-                        <PorcentajeIVA t-esc="'%.2f'% percentage_iva"/>
-                    </Articulos>
-                </t>
-            </DSCargaRemisionProv>
+                        <CantidadArticulos t-esc="int(cantcont)"/>
+                    </Pedidos>
+
+                <!-- Articulos -->
+                    
+                    <t t-set="number_line" t-value="0"/>
+                    <t t-foreach="record.invoice_line_ids" t-as="rec">
+                        <t t-set="number_line" t-value="number_line + 1"/>
+                        <Articulos Id="Remision1" t-att-RowOrder="number_line">
+                            <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
+                            <Remision t-esc="record.remision"/>
+                            <FolioPedido t-field="record.number_order"/>
+                            <Tienda t-field="record.partner_shipping_id.shipping_number_store"/>
+                            <Codigo t-esc="rec.product_id.barcode"/>
+                            <CantidadUnidadCompra t-esc="rec.quantity"/>
+                            <CostoNetoUnidadCompra t-esc="round(rec.price_unit,2)"/>
+                            <PorcentajeIEPS t-esc="'%.2f'% percentage_ieps"/>
+                            <PorcentajeIVA t-esc="'%.2f'% percentage_iva"/>
+                        </Articulos>
+                    </t>
+                </DSCargaRemisionProv>
+            </t>
         </template>
         <record id="addenda_soriana_foot_truck" model="ir.ui.view">
             <field name="l10n_mx_edi_addenda_flag">True</field>
