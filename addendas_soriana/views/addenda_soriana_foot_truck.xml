@@ -3,7 +3,7 @@
     <data noupdate="0">
         <template id="addenda_soriana_foot_truck" name="soriana_pie_de_camion">
             <t t-if="record.move_type == 'out_invoice'">
-                <DSCargaRemisionProv xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/DSCargaRemisionProv.xsd">
+                <DSCargaRemisionProv>   <!-- xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/DSCargaRemisionProv.xsd"> -->
                     <!-- Datos del xml generado por el SAT -->
                     <t t-set="xml" t-value="record._get_values_addenda()"/>
                     <t t-set="format_float" t-value="xml.get('format_float')"/>
@@ -41,7 +41,7 @@
                         </t>
                     </t>
 
-                    <Remision Id="Remision1" RowOrder="1">
+                    <Remision RowOrder="1" Id="Remision1">
                         <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
                         <Remision t-esc="record.remision"/> <!--Consultar -->
                         <Consecutivo>0</Consecutivo>
@@ -62,10 +62,11 @@
                         <CantidadPedidos t-field="record.quantity_orders"/> 
                         <t t-set="formatfecha" t-value="record.date_of_deli" t-options="{&quot;format&quot;: &quot;yyyy-MM-dd&quot;}"/>
                         <FechaEntregaMercancia t-esc="str(formatfecha)+'T'+'00:00:00'"/>
-                        <FolioNotaEntrada t-field="record.entry_note_folio"/>
+                        <Cita t-field="record.number_appoi"/>
+                        <!-- <FolioNotaEntrada t-field="record.entry_note_folio"/> -->
                     </Remision>
 
-                    <Pedidos Id="Remision1" RowOrder="1">
+                    <Pedidos RowOrder="1" Id="Remision1">
                         <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
                         <Remision t-esc="serie+str(folio)"/>
                         <FolioPedido t-field="record.number_order"/>
@@ -78,7 +79,7 @@
                     <t t-set="number_line" t-value="0"/>
                     <t t-foreach="record.invoice_line_ids" t-as="rec">
                         <t t-set="number_line" t-value="number_line + 1"/>
-                        <Articulos Id="Remision1" t-att-RowOrder="number_line">
+                        <Articulos t-att-RowOrder="number_line" t-att-Id="Articulos+number_line">
                             <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
                             <Remision t-esc="record.remision"/>
                             <FolioPedido t-field="record.number_order"/>

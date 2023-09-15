@@ -3,7 +3,7 @@
     <data noupdate="0">
         <template id="addenda_sorianaFE" name="Soriana_FE">
             <t t-if="record.move_type == 'out_invoice'">
-                <DSCargaRemisionProv xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/DSCargaRemisionProv.xsd">
+                <DSCargaRemisionProv>  <!-- xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/DSCargaRemisionProv.xsd"> -->
                 <!-- Variables de datos restantes -->
                 <t t-set="sdato" t-value="'FaltaDato'"/>
                 <!-- Datos del xml generado por el SAT -->
@@ -26,7 +26,7 @@
                     <t t-set="cantcont" t-value="cantcont + 1"/>
                 </t>
 
-                <Remision>
+                <Remision RowOrder="1" Id="Remision1">
                     <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
                     <Remision t-esc="serie+str(folio)"/>
                     <Consecutivo>0</Consecutivo>
@@ -71,16 +71,16 @@
                     <t t-set="formatfecha" t-value="record.sale_order_id.date_of_deli" t-options="{&quot;format&quot;: &quot;yyyy-MM-dd&quot;}"/>
                     <FechaEntregaMercancia t-esc="str(formatfecha)+'T'+'00:00:00'"/>
                     <Cita t-field="record.sale_order_id.number_appoi"/>
-                    <FolioNotaEntrada t-field="record.sale_order_id.entry_note_folio"/>
+                    <!-- <FolioNotaEntrada t-field="record.sale_order_id.entry_note_folio"/> -->
                 </Remision>
 
-                <Pedidos>
+                <Pedidos RowOrder="1" Id="Remision1">
                     <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
                     <Remision t-esc="serie+str(folio)"/>
                     <FolioPedido t-field="record.sale_order_id.number_order"/>
                     <Tienda t-field="record.partner_shipping_id.shipping_number_store"/>
                     <CantidadArticulos t-esc="int(cantcont)"/>
-                    <PedidoEmitidoProveedor>SI</PedidoEmitidoProveedor>
+                    <!-- <PedidoEmitidoProveedor>SI</PedidoEmitidoProveedor> -->
                 </Pedidos>
 
                 <!-- Articulos -->
@@ -96,7 +96,7 @@
                         </t>
                     </t>
                     <t t-set="idrowart" t-value="idrowart + 1"/>
-                    <Articulos>
+                    <Articulos t-att-RowOrder="idrowart" t-att-Id="Articulos+idrowart">
                         <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
                         <Remision t-esc="serie+str(folio)"/>
                         <FolioPedido t-field="record.sale_order_id.number_order"/>

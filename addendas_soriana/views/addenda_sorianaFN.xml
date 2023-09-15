@@ -3,7 +3,7 @@
     <data noupdate="0">
         <template id="addenda_sorianaFN" name="Soriana Factura Normal codigo">
             <t t-if="record.move_type == 'out_invoice'">
-                <DSCargaRemisionProv xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/DSCargaRemisionProv.xsd">
+                <DSCargaRemisionProv> <!--xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/DSCargaRemisionProv.xsd">-->
                     <!-- Variables de datos restantes -->
                     <t t-set="sdato" t-value="'FaltaDato'"/>
                     <!-- Datos del xml generado por el SAT -->
@@ -26,7 +26,7 @@
                         <t t-set="cantcont" t-value="cantcont + 1"/>
                     </t>
 
-                    <Remision Id="Remision1" RowOrder="0">
+                    <Remision RowOrder="1" Id="Remision1">
                         <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
                         <Remision t-esc="serie+str(folio)"/>
                         <Consecutivo>0</Consecutivo>
@@ -72,7 +72,7 @@
                         <Cita t-field="record.sale_order_id.number_appoi"/>
                     </Remision>
 
-                    <Pedidos>
+                    <Pedidos RowOrder="1" Id="Remision1">
                         <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
                         <Remision t-esc="serie+str(folio)"/>
                         <FolioPedido t-field="record.sale_order_id.number_order"/>
@@ -93,7 +93,7 @@
                             </t>
                         </t>
                         <t t-set="idrowart" t-value="idrowart + 1"/>
-                        <Articulos>
+                        <Articulos t-att-RowOrder="idrowart" t-att-Id="Articulos+idrowart">
                             <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
                             <Remision t-esc="serie+str(folio)"/>
                             <FolioPedido t-field="record.sale_order_id.number_order"/>
