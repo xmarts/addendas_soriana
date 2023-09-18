@@ -96,7 +96,7 @@
                         </t>
                     </t>
                     <t t-set="idrowart" t-value="idrowart + 1"/>
-                    <Articulos t-att-RowOrder="idrowart" t-att-Id="Articulos+str(idrowart)">
+                    <Articulos t-att-RowOrder="idrowart" t-att-Id="'Articulos'+str(idrowart)">
                         <Proveedor t-field="record.partner_shipping_id.shipping_number_provider"/>
                         <Remision t-esc="serie+str(folio)"/>
                         <FolioPedido t-field="record.sale_order_id.number_order"/>
