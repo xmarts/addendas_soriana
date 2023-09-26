@@ -70,7 +70,7 @@
                         <Proveedor t-field="record.partner_id.shipping_number_provider"/>
                         <Remision t-esc="serie+str(folio)"/>
                         <FolioPedido t-field="record.number_order"/>
-                        <Tienda t-field="record.partner_id.shipping_number_store"/>
+                        <Tienda t-field="record.shipping_number_cedis"/>
                         <CantidadArticulos t-esc="int(cantcont)"/>
                     </Pedidos>
 
@@ -83,7 +83,7 @@
                             <Proveedor t-field="record.partner_id.shipping_number_provider"/>
                             <Remision t-esc="record.remision"/>
                             <FolioPedido t-field="record.number_order"/>
-                            <Tienda t-field="record.partner_id.shipping_number_store"/>
+                            <Tienda t-field="record.shipping_number_cedis"/>
                             <Codigo t-esc="rec.product_id.barcode"/>
                             <CantidadUnidadCompra t-esc="rec.quantity"/>
                             <CostoNetoUnidadCompra t-esc="round(rec.price_unit,2)"/>
