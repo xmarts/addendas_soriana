@@ -48,8 +48,8 @@
                         <t t-set="fechar" t-value="record.date_remision" t-options="{'format': 'yyyy-MM-dd'}"/> <!--Consultar-->
                         <FechaRemision t-esc="str(fechar)+'T'+'00:00:00'"/>
                         <Tienda t-field="record.shipping_number_cedis"/>
-                        <TipoMoneda t-field="record.currency_id.currency_unit_label"/> 
-                        <TipoBulto t-field="record.package_type"/>
+                        <TipoMoneda>1</TipoMoneda> 
+                        <TipoBulto t-esc="record.package_type"/>
                         <EntregaMercancia t-field="record.partner_id.gln"/>
                         <CumpleReqFiscales>true</CumpleReqFiscales>
                         <CantidadBultos t-esc="int(cantidadent)"/>
