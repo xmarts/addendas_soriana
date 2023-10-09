@@ -68,7 +68,7 @@
 
                     <Pedidos RowOrder="1" Id="Remision1">
                         <Proveedor t-field="record.partner_id.shipping_number_provider"/>
-                        <Remision t-esc="serie+str(folio)"/>
+                        <Remision t-esc="record.remision""/>
                         <FolioPedido t-field="record.number_order"/>
                         <Tienda t-field="record.shipping_number_cedis"/>
                         <CantidadArticulos t-esc="int(cantcont)"/>
