@@ -79,7 +79,7 @@
                     <t t-set="number_line" t-value="0"/>
                     <t t-foreach="record.invoice_line_ids" t-as="rec">
                         <t t-set="number_line" t-value="number_line + 1"/>
-                        <Articulos t-att-Id="'Articulos'+str(number_line)">
+                        <Articulos t-att-Id="'Articulo'+str(number_line)">
                             <Proveedor t-field="record.partner_id.shipping_number_provider"/>
                             <Remision t-esc="record.remision"/>
                             <FolioPedido t-field="record.number_order"/>
