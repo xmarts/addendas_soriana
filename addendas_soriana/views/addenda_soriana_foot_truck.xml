@@ -41,7 +41,7 @@
                         </t>
                     </t>
 
-                    <Remision RowOrder="1" Id="Remision1">
+                    <Remision Id="Remision1" RowOrder="0" >
                         <Proveedor t-field="record.partner_id.shipping_number_provider"/>
                         <Remision t-esc="record.remision"/> <!--Consultar -->
                         <Consecutivo>0</Consecutivo>
@@ -66,7 +66,7 @@
                         <!-- <FolioNotaEntrada t-field="record.entry_note_folio"/> -->
                     </Remision>
 
-                    <Pedidos RowOrder="1" Id="Remision1">
+                    <Pedidos  Id="Pedido0" RowOrder="0">
                         <Proveedor t-field="record.partner_id.shipping_number_provider"/>
                         <Remision t-esc="record.remision"/>
                         <FolioPedido t-field="record.number_order"/>
