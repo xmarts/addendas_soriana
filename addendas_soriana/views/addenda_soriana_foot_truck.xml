@@ -50,7 +50,7 @@
                         <Tienda t-field="record.shipping_number_cedis"/>
                         <TipoMoneda>1</TipoMoneda> 
                         <TipoBulto t-esc="record.package_type"/>
-                        <EntregaMercancia t-field="record.partner_id.gln"/>
+                        <EntregaMercancia>1<EntregaMercancia/>
                         <CumpleReqFiscales>true</CumpleReqFiscales>
                         <CantidadBultos t-esc="int(cantidadent)"/>
                         <Subtotal t-esc="subtotal"/> <!--Consultar-->
